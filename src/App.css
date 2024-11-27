@@ -1,0 +1,64 @@
+/* Basic reset and layout */
+.App {
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+}
+
+.App-logo {
+  height: 50vmin; /* Increased size */
+  pointer-events: none;
+  transition: transform 0.5s ease-in-out; /* Smooth hover effect */
+}
+
+.App-logo:hover {
+  transform: rotate(15deg); /* Slight tilt effect on hover */
+}
+
+/* Media query for reduced motion preference */
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin 10s infinite linear;
+  }
+}
+
+/* Header styling with modern design */
+.App-header {
+  background: linear-gradient(135deg, #6a11cb 0%, #bb25fc 100%); /* Gradient background */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.App-header h1 {
+  font-size: 2rem;
+  margin: 20px;
+}
+
+/* Link styling with hover effect */
+.App-link {
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+  margin-top: 20px;
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+}
+
+.App-link:hover {
+  color: #6961fb; /* Light blue hover effect */
+}
+
+/* Keyframes for logo spin animation */
+@keyframes App-logo-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

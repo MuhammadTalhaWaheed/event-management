@@ -1,0 +1,135 @@
+/* Global styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #9b64cc;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+/* Heading styles */
+h1 {
+  color: #bc34db;
+  font-size: 36px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: 2px;
+  font-family: 'Open Sans', sans-serif;
+}
+
+/* Form styles */
+form {
+  background-color: #DAFFFB;
+  padding: 30px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* Input field styles */
+input[type="text"],
+input[type="password"] {
+  width: 80%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1.5px solid gray;
+  border-radius: 3px;
+  font-size: 16px;
+  background-color: #DAFFFB;
+}
+
+/* Button styles */
+button[type="submit"] {
+  background-color: #7924e1;
+  color: #fff;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 3px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  width: 45%;
+}
+
+button[type="submit"]:hover {
+  background-color: rgb(108, 16, 246);
+}
+
+/* Button for login/signup links */
+.logregbtn {
+  background-color: #8b07ff;
+  color: #fff;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 3px;
+  font-size: 18px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 20px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.logregbtn:hover {
+  background-color: rgb(101, 4, 120);
+}
+
+/* Registration/login message styles */
+#registrationMessage, #loginMessage {
+  background-color: #351787;
+  color: white;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 16px;
+  text-align: center;
+  max-width: 21rem;
+  width: 100%;
+}
+
+/* Styles for select dropdown and button hover */
+select, button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #DAFFFB;
+}
+
+select:hover, button:hover {
+  background-color: #8864cc;
+}
+
+/* Styles for checking availability button */
+button#checkAvailability {
+  background-color: #8800cc;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+/* Styles for available halls display */
+#availableHalls {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}

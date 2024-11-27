@@ -1,0 +1,298 @@
+/* MainPage.css */
+
+.Main{
+  max-width: 100rem;
+  max-height: 50rem;
+}
+.MainPage {
+  font-family: Arial, sans-serif;
+  background: black;
+  padding: 20px;
+  text-align: center;
+}
+
+h1 {
+  color: #fff;
+}
+
+
+.type-selector {
+  margin: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  max-width: 20rem;
+}
+.buttons-container {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; 
+}
+
+
+.button {
+  padding: 10px 20px;
+  background-color: #8330d6;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 150px; /* Set a fixed width for the button */
+  margin: 0 auto; /* Center the button horizontally within the container */
+  margin-bottom: 1rem;
+  margin-right: 2rem;
+  margin-top: 2rem;
+  font-size: large;
+}
+
+.button3 {
+  padding: 10px 20px;
+  background-color: #8330d6;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 200px; 
+  margin: 0 auto; /* Center the button horizontally within the container */
+  margin-bottom: 1rem;
+  margin-right: 2rem;
+  margin-top: 2rem;
+  font-size: large;
+}
+
+.button:hover {
+  background-color: #8330d6;
+}
+
+.button3:hover {
+  background-color: #8330d6;
+}
+
+
+.hall-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.hall-card {
+  background-color: #f6daff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  width: 300px;
+  height: 205px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  position: relative;
+  
+}
+
+.hall-card h2 {
+  color: #333;
+}
+
+.view-button {
+  background-color: #8330d6;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: large;
+  max-width: 8rem;
+}
+
+.view-button:hover {
+  background-color: #8330d6;
+}
+
+.booking-modal {
+  background-color: #edcdfa;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  width: 400px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+}
+
+.booking-modal h2 {
+  color: #333;
+}
+
+.form-group {
+  margin: 10px 0;
+  text-align: left;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #efdaff;
+}
+
+
+button[type="button"] {
+  padding: 10px 20px;
+  background-color: #8330d6;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 150px; /* Set a fixed width for the button */
+  margin: 0 auto; /* Center the button horizontally within the container */
+  margin-top: 1rem;
+  margin-left: 1.1rem;
+}
+
+button[type="button"]:hover {
+  background-color: #8330d6;
+}
+
+
+
+
+.copy-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: #8330d6;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  max-width: 4rem;
+}
+
+.check {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: #8330d6;
+  color: #fff;
+  border: none;
+  padding: 15px 10px;
+  cursor: pointer;
+  max-width: 10rem;
+  font-size: large;
+}
+
+.greet{
+  margin-bottom: 0rem;
+}
+
+
+@media (max-width: 768px) {
+  /* Adjust styles for screens with a maximum width of 768px or smaller */
+
+  .MainPage {
+    padding: 10px; /* Reduce padding for smaller screens */
+  }
+
+  h1 {
+    font-size: 24px; /* Adjust font size for smaller screens */
+    margin-bottom: 10px; /* Reduce margin for tighter look */
+  }
+
+  .type-selector {
+    max-width: 100%; /* Adjust to full width */
+  }
+
+  .button,.button3 {
+    padding: 10px 20px;
+    font-size: 16px; /* Slightly smaller font for readability on small screens */
+    width: 6rem; 
+    margin-top:0px;
+  }
+
+  .hall-card {
+    padding: 10px; /* Reduce padding for small screens */
+    width: 60%; /* Adjust card width to full width */
+    height: 100%;
+    margin-bottom: 0px;
+  }
+  .view-button {
+    padding: 10px 20px;
+    margin-top: 0px;
+    font-size: small;
+    max-width: 7rem;
+  }
+  .hall-card h2{
+    margin-top: 1.7rem;
+  }
+
+  .p{
+    margin-bottom: 0px;
+  }
+
+  .booking-modal {
+    padding: 10px;
+    width: 290px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    max-height:35rem;
+    margin: 10px auto;
+  }
+
+  .booking-modal h2 {
+    color: #333;
+  }
+  form{
+    max-width:22rem;
+    width: 75%;
+    height: 26%;
+  }
+  button[type="submit"] {
+    text-align: center;
+  }
+
+  .mybooking {
+    width: 50%;
+    padding: 1px;
+    width: 4.2rem;
+  }
+  
+}
+
+
+
+
+.dialog-title {
+  background-color: #8330d6;
+  color: #fff;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+.form-input {
+  width: 100%;
+  padding: 8px;
+  margin: 4px 0;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.action-button {
+  width: 45%;
+}
+
+
+
+

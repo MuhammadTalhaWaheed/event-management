@@ -1,0 +1,136 @@
+/* Add this CSS to a separate CSS file or directly in your component */
+
+.button1
+{
+    padding: 10px 20px;
+    background-color: #561787;
+    color: #fff;
+    border-radius: 5px;
+    width: 150px;
+    margin: 0px; /* Center the button horizontally within the container */
+    text-align: center;
+    margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  font-size: large;
+  /* cursor: pointer; */
+}
+
+.button1:hover {
+    background-color: rgb(4, 60, 120);
+  }
+  
+/* Style the table */
+table {
+    width: 150vh;
+    height: 100%; /* Full viewport height */
+    margin: 0;
+    font-family: Arial, sans-serif;
+    font-size: 18px; /* Increase font size */
+    border-collapse: collapse;
+  }
+  
+  /* Style the table header */
+  th {
+    background-color: #f2f2f2;
+    text-align: left;
+    padding: 12px; /* Increase header padding */
+    border: 1px solid black;
+    color: black;
+  }
+  
+  /* Style the table data cells */
+  td {
+    border: 1px solid black;
+    padding: 12px; /* Increase cell padding */
+    background: #176B87;
+    color: white;
+  }
+  
+  /* Style alternate rows with a different background color */
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  /* Hover effect on rows */
+  tr:hover {
+    background-color: #176B87;
+  }
+
+  
+
+table th button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 5px;
+  outline: none;
+  padding: 0;
+  width: 1rem;
+}
+
+table th button:hover {
+  text-decoration: underline;
+}
+
+/* Style for the up arrow */
+table th button.up-arrow::after {
+  content: "▲";
+}
+
+/* Style for the down arrow */
+table th button.down-arrow::after {
+  content: "▼";
+}
+
+
+
+
+
+
+/* Add these styles to your existing CSS */
+
+/* Media query for mobile devices */
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 24px;
+  }
+
+  .greet{
+    margin-top: 40px;
+  }
+  /* Center the table */
+  table {
+    width: 50%;
+    margin: 0 auto; /* Center the table horizontally */
+  }
+
+  th, td {
+    padding: 0.5px; /* Reduce cell padding for mobile view */
+    text-align: center; /* Center the text in the table cells */
+    line-height: 1.6; /* Adjust the line-height for spacing above and below the text */
+  }
+
+  /* Remove the sort buttons to save space on small screens */
+  th button {
+    display: none;
+  }
+
+  /* Center the "Back" button */
+  .button1 {
+    width: 20%;
+    margin: 10px auto; /* Center the button horizontally */
+  }
+}
+
+
+/* Media query for smaller mobile devices */
+@media (max-width: 480px) {
+  /* Further adjustments for smaller screens */
+  table {
+    width: 90%;
+  }
+}
