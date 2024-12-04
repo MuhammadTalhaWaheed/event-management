@@ -4,7 +4,7 @@ import { db } from './firebase';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
-
+import jsPDF from 'jspdf';
 
 const MyBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -14,47 +14,29 @@ const MyBookings = () => {
   const [sortByStartTime, setSortByStartTime] = useState(false);
 
   const username = Cookies.get('username');
-
-
   const [customDialogOpen, setCustomDialogOpen] = useState(false);
   const [customDialogTitle, setCustomDialogTitle] = useState('');
   const [customDialogMessage, setCustomDialogMessage] = useState('');
   const [customDialogButtonName, setCustomDialogButtonName] = useState('');
 
+  const pricingPerHour = 500; // Example pricing per hour
 
-  const CustomDialog = ({ open, onClose, title, message, buttonName }) => {
-    return (
-      <Dialog open={open} onClose={onClose}>
-        <DialogTitle>{title}</DialogTitle>
-        <DialogContent>
-          <p>{message}</p>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose} color="primary" autoFocus>
-            {buttonName}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );
-  };
+  // Custom Dialog Component
+  const CustomDialog = ({ open, onClose, title, message, buttonName }) => (
+    <Dialog open={open} onClose={onClose}>
+      <DialogTitle>{title}</DialogTitle>
+      <DialogContent>
+        <p>{message}</p>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color="primary" autoFocus>
+          {buttonName}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
 
-  // Function to open the custom dialog
-  const openCustomDialog = (title, message, buttonName) => {
-    setCustomDialogTitle(title);
-    setCustomDialogMessage(message);
-    setCustomDialogButtonName(buttonName);
-    setCustomDialogOpen(true);
-  };
-
-  // Function to close the custom dialog
-  const closeCustomDialog = () => {
-    setCustomDialogTitle('');
-    setCustomDialogMessage('');
-    setCustomDialogButtonName('');
-    setCustomDialogOpen(false);
-  };
-
-
+  // Fetch bookings for the logged-in user
   useEffect(() => {
     if (username) {
       const fetchMyBookings = async () => {
@@ -68,18 +50,6 @@ const MyBookings = () => {
             myBookings.push({ id: doc.id, ...doc.data() });
           });
 
-          myBookings.sort((a, b) => {
-            const dateTimeA = new Date(`${a.date}T${a.startTime}`);
-            const dateTimeB = new Date(`${b.date}T${b.startTime}`);
-
-            if (dateTimeA < dateTimeB) return -1;
-            if (dateTimeA > dateTimeB) return 1;
-
-            if (a.creationOrder < b.creationOrder) return -1;
-            if (a.creationOrder > b.creationOrder) return 1;
-            return 0;
-          });
-
           setBookings(myBookings);
         } catch (error) {
           console.error('Error fetching user bookings:', error);
@@ -90,134 +60,37 @@ const MyBookings = () => {
     }
   }, [username]);
 
-  const handleEditBooking = (booking) => {
-    setEditingBooking(booking);
-    setUpdatedBooking({ ...booking });
+  // Calculate booking price
+  const calculatePrice = (startTime, endTime) => {
+    const start = new Date(`1970-01-01T${startTime}`);
+    const end = new Date(`1970-01-01T${endTime}`);
+    const duration = (end - start) / (1000 * 60 * 60); // Duration in hours
+    return Math.max(duration, 0) * pricingPerHour;
   };
 
-  // const handleUpdateBooking = async () => {
-  //   try {
-  //     const bookingDocRef = doc(db, 'bookings', editingBooking.id);
-  //     const { hallName, date, startTime, endTime } = updatedBooking;
+  // Generate and download invoice as PDF
+  const generateInvoice = (booking) => {
+    const { hallName, date, startTime, endTime } = booking;
+    const price = calculatePrice(startTime, endTime);
 
-  //     await updateDoc(bookingDocRef, { hallName, date, startTime, endTime });
+    const doc = new jsPDF();
+    doc.setFontSize(18);
+    doc.text('Invoice', 105, 20, { align: 'center' });
+    doc.setFontSize(12);
+    doc.text(`Date: ${date}`, 20, 40);
+    doc.text(`Hall: ${hallName}`, 20, 50);
+    doc.text(`Start Time: ${startTime}`, 20, 60);
+    doc.text(`End Time: ${endTime}`, 20, 70);
+    doc.text(`Total Price: Rs. ${price}`, 20, 80);
 
-  //     setBookings((bookings) =>
-  //       bookings.map((booking) =>
-  //         booking.id === editingBooking.id ? { ...booking, ...updatedBooking } : booking
-  //       )
-  //     );
-
-  //     setEditingBooking(null);
-  //     setUpdatedBooking(null);
-  //   } catch (error) {
-  //     console.error('Error updating booking:', error);
-  //   }
-  // };
-  const handleUpdateBooking = async () => {
-    try {
-      const updatedBookings = [...bookings];
-      const editingIndex = updatedBookings.findIndex((booking) => booking.id === editingBooking.id);
-  
-      if (editingIndex === -1) {
-        console.error('Editing booking not found.');
-        return;
-      }
-  
-      const updatedBookingCopy = {
-        hallName: updatedBooking.hallName,
-        date: updatedBooking.date,
-        startTime: updatedBooking.startTime,
-        endTime: updatedBooking.endTime,
-      };
-  
-      const hasConflict = updatedBookings.some((booking, index) => {
-        if (index === editingIndex) return false;
-  
-        const editingDateTime = new Date(`${updatedBookingCopy.date}T${updatedBookingCopy.startTime}`);
-        const editingEndDateTime = new Date(`${updatedBookingCopy.date}T${updatedBookingCopy.endTime}`);
-        const existingDateTime = new Date(`${booking.date}T${booking.startTime}`);
-        const existingEndDateTime = new Date(`${booking.date}T${booking.endTime}`);
-  
-        if (
-          editingDateTime < existingEndDateTime &&
-          editingEndDateTime > existingDateTime
-        ) {
-          return true;
-        }
-  
-        return false;
-      });
-  
-      if (hasConflict) {
-        openCustomDialog("Failed!","Hall is already booked for the selected time. Please choose another time","Ok");
-        return;
-      }
-  
-      updatedBookings[editingIndex] = updatedBookingCopy;
-      setBookings(updatedBookings);
-  
-      setEditingBooking(null);
-      setUpdatedBooking(null);
-  
-      const bookingDocRef = doc(db, 'bookings', editingBooking.id);
-      const { hallName, date, startTime, endTime } = updatedBookingCopy;
-  
-      await updateDoc(bookingDocRef, { hallName, date, startTime, endTime });
-  
-      openCustomDialog("Success!","Booking successfully edited!","Done");
-    } catch (error) {
-      console.error('Error updating booking:', error);
-    }
+    doc.save(`Invoice_${hallName}_${date}.pdf`);
   };
-
-  const handleCancelBooking = async (bookingId) => {
-    const confirmation = window.confirm('Are you sure you want to cancel this booking?');
-
-    if (confirmation) {
-      try {
-        const bookingDocRef = doc(db, 'bookings', bookingId);
-        await deleteDoc(bookingDocRef);
-        openCustomDialog("Success!","Booking cancelled successfully","Done");
-
-        setBookings((bookings) => bookings.filter((booking) => booking.id !== bookingId));
-      } catch (error) {
-        console.error('Error canceling booking:', error);
-      }
-    }
-  };
-
-  const sortBookingsByDate = () => {
-    const sortedBookings = [...bookings];
-    sortedBookings.sort((a, b) => {
-      const dateA = new Date(a.date);
-      const dateB = new Date(b.date);
-      return sortByDate ? dateA - dateB : dateB - dateA;
-    });
-    setSortByDate(!sortByDate);
-    setBookings(sortedBookings);
-  };
-
-  const sortBookingsByStartTime = () => {
-    const sortedBookings = [...bookings];
-    sortedBookings.sort((a, b) => {
-      const timeA = new Date(`1970-01-01T${a.startTime}`);
-      const timeB = new Date(`1970-01-01T${b.startTime}`);
-      return sortByStartTime ? timeA - timeB : timeB - timeA;
-    });
-    setSortByStartTime(!sortByStartTime);
-    setBookings(sortedBookings);
-  };
-
-  const currentdate = new Date().toISOString().split('T')[0];
-
 
   return (
     <div>
-
       <CustomDialog
         open={customDialogOpen}
-        onClose={closeCustomDialog}
+        onClose={() => setCustomDialogOpen(false)}
         title={customDialogTitle}
         message={customDialogMessage}
         buttonName={customDialogButtonName}
@@ -228,82 +101,29 @@ const MyBookings = () => {
         <thead>
           <tr>
             <th>Hall Name</th>
-            <th>
-              Date
-              <button onClick={sortBookingsByDate}>
-                {sortByDate ? '▼' : '▲'}
-              </button>
-            </th>
-            <th>
-              Start Time
-              <button onClick={sortBookingsByStartTime}>
-                {sortByStartTime ? '▼' : '▲'}
-              </button>
-            </th>
+            <th>Date</th>
+            <th>Start Time</th>
             <th>End Time</th>
-            <th>Edit</th>
-            <th>Cancel</th>
+            <th>Price (Rs.)</th>
+            <th>Invoice</th>
           </tr>
         </thead>
         <tbody>
-          {bookings.map((booking) => (
-            <tr key={booking.id}>
-              <td>{booking.hallName}</td>
-              <td>
-                {editingBooking && editingBooking.id === booking.id ? (
-                  <input
-                    type="date"
-                    value={updatedBooking.date}
-                    min={currentdate}
-                    className="mybooking"
-                    onChange={(e) =>
-                      setUpdatedBooking({ ...updatedBooking, date: e.target.value })
-                    }
-                  />
-                ) : (
-                  booking.date
-                )}
-              </td>
-              <td>
-                {editingBooking && editingBooking.id === booking.id ? (
-                  <input
-                    type="time"
-                    value={updatedBooking.startTime}
-                    className="mybooking"
-                    onChange={(e) =>
-                      setUpdatedBooking({ ...updatedBooking, startTime: e.target.value })
-                    }
-                  />
-                ) : (
-                  booking.startTime
-                )}
-              </td>
-              <td>
-                {editingBooking && editingBooking.id === booking.id ? (
-                  <input
-                    type="time"
-                    value={updatedBooking.endTime}
-                    className="mybooking"
-                    onChange={(e) =>
-                      setUpdatedBooking({ ...updatedBooking, endTime: e.target.value })
-                    }
-                  />
-                ) : (
-                  booking.endTime
-                )}
-              </td>
-              <td>
-                {editingBooking && editingBooking.id === booking.id ? (
-                  <button onClick={handleUpdateBooking}>Save</button>
-                ) : (
-                  <button onClick={() => handleEditBooking(booking)}>Edit</button>
-                )}
-              </td>
-              <td>
-                <button onClick={() => handleCancelBooking(booking.id)}>Cancel</button>
-              </td>
-            </tr>
-          ))}
+          {bookings.map((booking) => {
+            const price = calculatePrice(booking.startTime, booking.endTime);
+            return (
+              <tr key={booking.id}>
+                <td>{booking.hallName}</td>
+                <td>{booking.date}</td>
+                <td>{booking.startTime}</td>
+                <td>{booking.endTime}</td>
+                <td>{price}</td>
+                <td>
+                  <button onClick={() => generateInvoice(booking)}>Download</button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
       <Link to="/MainPage">
